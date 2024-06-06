@@ -11,7 +11,7 @@ from sklearn.metrics import roc_auc_score, f1_score, confusion_matrix
 from tabulate import tabulate
 import numpy as np
 import torch
-
+import pandas as pd
 # The definition of magnification of our gastic dataset.
 # 'Large':40X, 'Medium':20X, 'Small':10X, 'Overview':5X
 scales = ['Large', 'Medium', 'Small', 'Overview']
@@ -34,8 +34,8 @@ def merge_config_to_args(args, cfg):
     
 
     # data
-    args.slide_list = os.path.join(args.data_conf_dir, 'slide_list.pkl')
-    args.task_list, args.lesions = get_slide_config(os.path.join(args.data_conf_dir, 'dataset_config.pkl'))
+    args.slide_list = os.path.join('/kaggle/working/kat-wsi-tcga/dataset/tcga_lung/slide_list.pkl')
+    args.task_list, args.lesions = get_slide_config(os.path.join("/kaggle/working/kat-wsi-tcga/dataset/tcga_lung/dataset_config.pkl"))
     args.label_id = cfg.DATA.LABEL_ID
     args.test_ratio = cfg.DATA.TEST_RATIO
     args.fold_num = cfg.DATA.FOLD_NUM
@@ -255,8 +255,16 @@ def calc_classification_metrics(y_preds, y_labels, num_classes=None, prefix='Eva
     results["m_f1"] = f1_score(y_labels, np.argmax(y_preds, axis=1), average='macro')
     results["w_f1"] = f1_score(y_labels, np.argmax(y_preds, axis=1), average='weighted')
     if num_classes < 3:
-        results["macro"] = roc_auc_score(y_labels, y_preds[:,1], average='macro', multi_class='ovo')
-        results["micro"] = roc_auc_score(y_labels, y_preds[:,1], average='weighted', multi_class='ovr')
+        print(y_labels, y_preds[:,1])
+        if len(np.unique(y_labels)) == 1:
+            # Handle the case where only one class is present
+            # You might want to return a default value or handle it differently based on your use case
+            print("Only one class present in y_true.")
+        else:
+            # Calculate ROC AUC score normally
+            results["macro"] = roc_auc_score(y_labels, y_preds[:,1], average='macro', multi_class='ovo')
+            results["micro"] = roc_auc_score(y_labels, y_preds[:,1], average='weighted', multi_class='ovr')
+
     else:
         results["macro"] = roc_auc_score(y_labels, y_preds, average='macro', multi_class='ovo')
         results["micro"] = roc_auc_score(y_labels, y_preds, average='weighted', multi_class='ovr')

@@ -15,7 +15,7 @@ Please refer to https://github.com/zhengyushan/tcga2tile.
 '''
 
 # TCGA Lung dataset
-data_list_dir = 'tcga_lung'
+data_list_dir = '/kaggle/working/kat-wsi-tcga/dataset/tcga_lung'
 
 # Make slide list
 train_slide_list = []
@@ -47,14 +47,14 @@ with open(os.path.join(data_list_dir, 'slide_list.pkl'), 'wb') as f:
     )
 
 # Make datset config
-lesions = ["Normal", "A.", "SCN",]
+lesions = ["Normal", "Cancer",]
 
 tasks = {
     1:{'num_classes':3, 'map':{0:0, 1:1, 2:2}},
     2:{'num_classes':2, 'map':{0:0, 1:1, 2:1}},
 }
 
-with open('tcga_lung/dataset_config.pkl', 'wb') as f:
+with open('/kaggle/working/kat-wsi-tcga/dataset/tcga_lung/dataset_config.pkl', 'wb') as f:
     pickle.dump(
         {'tasks':tasks,
         'lesions':lesions,

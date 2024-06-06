@@ -182,6 +182,7 @@ class KernelWSILoader(torch.utils.data.Dataset):
 
 
     def get_wsi_data_path(self, idx):
+        # print(self.list_dir, self.dl[idx][0])
         return os.path.join(self.list_dir, self.dl[idx][0])
 
     def get_feat_dim(self):
@@ -190,7 +191,7 @@ class KernelWSILoader(torch.utils.data.Dataset):
     def get_weights(self):
         labels = np.asarray([path[1][self.ti-1] for path in self.dl])
         tmp = np.bincount(labels)
-        weights = 1 / np.asarray(tmp[labels], np.float)
+        weights = 1 / np.asarray(tmp[labels], np.float64)
 
         return weights
 

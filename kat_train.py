@@ -9,6 +9,7 @@ import os
 import pickle
 import time
 import numpy as np
+import matplotlib.pyplot as plt
 from yacs.config import CfgNode
 
 import torch
@@ -384,9 +385,10 @@ def train(train_loader, model, criterion, optimizer, epoch, args):
         # compute output
         _, output = kat_inference(model, data)
         loss = criterion(output, target)
-
+        
         # measure accuracy and record loss
         acc1, acc2 = accuracy(F.softmax(output, dim=1), target, topk=(1, 2))
+        # print(acc1, acc1)
         losses.update(loss.item(), target.size(0))
         top1.update(acc1[0], target.size(0))
         top2.update(acc2[0], target.size(0))
@@ -452,7 +454,7 @@ def evaluate(val_loader, model, criterion, args, prefix='Test'):
     y_preds = torch.cat(y_preds)
     y_labels = torch.cat(y_labels)
     confuse_mat, auc = calc_classification_metrics(y_preds, y_labels, args.num_classes, prefix=prefix)
-
+    print("Confusion matrix -->", confuse_mat)
     return top1.avg, confuse_mat, auc, {'pred':y_preds, 'label':y_labels}
     
 
