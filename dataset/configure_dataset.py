@@ -54,7 +54,7 @@ tasks = {
     2:{'num_classes':2, 'map':{0:0, 1:1, 2:1}},
 }
 
-with open('tcga_lung/dataset_config.pkl', 'wb') as f:
+with open('dataset/tcga_lung/dataset_config.pkl', 'wb') as f:
     pickle.dump(
         {'tasks':tasks,
         'lesions':lesions,
