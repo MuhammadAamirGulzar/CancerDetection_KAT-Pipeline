@@ -52,6 +52,7 @@ def main(args):
             p.map(sampling_slide, sampling_list)
 
     list_path = get_data_list_path(args)
+    print(get_data_list_path(args))
     dataset_split_path = os.path.join(list_path, 'split.pkl')
     if not os.path.exists(dataset_split_path):
         train_list = slide_data['train'] 
