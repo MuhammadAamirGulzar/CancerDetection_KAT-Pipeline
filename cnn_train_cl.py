@@ -154,7 +154,6 @@ def main(args):
 def main_worker(gpu, ngpus_per_node, args):
     # Add print statements here
     print(f"Training fold: {args.fold}")
-    print(f"Loading data from {args.data_dir}")
   
     args.num_classes = args.task_list[args.label_id]['num_classes']
 
