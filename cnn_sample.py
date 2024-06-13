@@ -41,6 +41,9 @@ def main(args):
     args.dataset_path = get_sampling_path(args)
     print('slide num', len(slide_list))
 
+    # Add print statement here
+    print(f"Sampling list: {slide_list}")
+
     sampling_list = [(i, args) for i in slide_list]
     if args.num_workers < 2:
         # sampling the data using single thread
