@@ -264,13 +264,16 @@ def make_list(args, min_file_size=5 * 1024):
         test_set = sample_list[-1]
 
         sub_list_path = os.path.join(list_path, f_name)
+
+        print(sub_list_path)
+      
         if not os.path.exists(sub_list_path):
             os.makedirs(sub_list_path)
 
         with open(os.path.join(sub_list_path, 'train'), 'wb') as f:
             pickle.dump({'base_dir': dataset_path,
                          'list': train_set_shuffle}, f)
-
+      
         if len(val_set):
             with open(os.path.join(sub_list_path, 'val'), 'wb') as f:
                 pickle.dump({'base_dir': dataset_path, 'list': val_set}, f)
