@@ -41,6 +41,9 @@ def main(args):
     args.dataset_path = get_sampling_path(args)
     print('slide num', len(slide_list))
 
+    # Add print statement here
+    print(f"Sampling list: {slide_list}")
+
     sampling_list = [(i, args) for i in slide_list]
     if args.num_workers < 2:
         # sampling the data using single thread
@@ -167,12 +170,6 @@ def sampling_slide(slide_info):
 
 
 def make_list(args, min_file_size=5 * 1024):
-    """
-    Attributes:
-        min_file_size : The minimum size of the jpeg considered in the training.
-            5*1024=5Kb: The histopathology image with no substantial content generally 
-                        in size of under 5Kb when compressed in jpeg format.
-    """
     dataset_path = get_sampling_path(args)
     list_path = get_data_list_path(args)
 
@@ -220,7 +217,6 @@ def make_list(args, min_file_size=5 * 1024):
                 for img in image_list:
                     if img[-3:] == 'jpg':
                         img_path = os.path.join(c_dir, img)
-                        # The file size of jpeg image
                         if os.path.getsize(img_path) < min_file_size:
                             continue
 
@@ -249,8 +245,7 @@ def make_list(args, min_file_size=5 * 1024):
         sample_list.append(sample_list_fold)
 
     for f_id in range(args.fold_num+1):
-        f_name = 'list_fold_all' if f_id == args.fold_num else 'list_fold_{}'.format(
-            f_id)
+        f_name = 'list_fold_all' if f_id == args.fold_num else 'list_fold_{}'.format(f_id)
         val_set = sample_list[f_id]
 
         train_set = []
@@ -269,13 +264,16 @@ def make_list(args, min_file_size=5 * 1024):
         test_set = sample_list[-1]
 
         sub_list_path = os.path.join(list_path, f_name)
+
+        print(sub_list_path)
+      
         if not os.path.exists(sub_list_path):
             os.makedirs(sub_list_path)
 
         with open(os.path.join(sub_list_path, 'train'), 'wb') as f:
             pickle.dump({'base_dir': dataset_path,
                          'list': train_set_shuffle}, f)
-
+      
         if len(val_set):
             with open(os.path.join(sub_list_path, 'val'), 'wb') as f:
                 pickle.dump({'base_dir': dataset_path, 'list': val_set}, f)
@@ -283,8 +281,10 @@ def make_list(args, min_file_size=5 * 1024):
             with open(os.path.join(sub_list_path, 'test'), 'wb') as f:
                 pickle.dump({'base_dir': dataset_path, 'list': test_set}, f)
 
-    return 0
+        # Debugging output
+        print(f"Fold {f_id}: Train set size: {len(train_set_shuffle)}, Val set size: {len(val_set)}, Test set size: {len(test_set)}")
 
+    return 0
 
 def extract_and_save_tiles(image_dir, slide_save_dir, position_list, tile_size,
                            imsize, step, invert_rgb=False):

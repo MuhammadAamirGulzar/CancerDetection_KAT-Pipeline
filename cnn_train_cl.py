@@ -152,6 +152,9 @@ def main(args):
 
 
 def main_worker(gpu, ngpus_per_node, args):
+    # Add print statements here
+    print(f"Training fold: {args.fold}")
+  
     args.num_classes = args.task_list[args.label_id]['num_classes']
 
     checkpoint = []
@@ -270,6 +273,9 @@ def main_worker(gpu, ngpus_per_node, args):
 
     traindir = os.path.join(get_data_list_path(args), args.fold_name, 'train')
     valdir = os.path.join(get_data_list_path(args), args.fold_name, 'val')
+
+    print('Train Directory: ', traindir)
+    print('Validation Directory: ', valdir)
     
     train_transforms = transforms.Compose([
         transforms.RandomResizedCrop(224, scale=(0.8, 1.)),
@@ -294,6 +300,10 @@ def main_worker(gpu, ngpus_per_node, args):
                              transform=train_transforms,
                              label_type=args.label_id
                              )
+
+    print(f"Validation set size: {len(val_set)}")
+    print(f"Training set size: {len(train_set)}")
+  
     if args.distributed:
         if args.weighted_sample:
             print('activate weighted sampling')
