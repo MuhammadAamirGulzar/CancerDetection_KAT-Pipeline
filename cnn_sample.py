@@ -167,8 +167,7 @@ def sampling_slide(slide_info):
         with open(time_file_path, 'w') as f:
             f.write('Sampling finished')
    
-
-
+#new added code
 def make_list(args, min_file_size=5 * 1024):
     dataset_path = get_sampling_path(args)
     list_path = get_data_list_path(args)
@@ -277,6 +276,9 @@ def make_list(args, min_file_size=5 * 1024):
         if len(val_set):
             with open(os.path.join(sub_list_path, 'val'), 'wb') as f:
                 pickle.dump({'base_dir': dataset_path, 'list': val_set}, f)
+        else:
+            print(f"Warning: Validation set is empty for fold {f_id}.")
+        
         if len(test_set):
             with open(os.path.join(sub_list_path, 'test'), 'wb') as f:
                 pickle.dump({'base_dir': dataset_path, 'list': test_set}, f)
@@ -285,6 +287,7 @@ def make_list(args, min_file_size=5 * 1024):
         print(f"Fold {f_id}: Train set size: {len(train_set_shuffle)}, Val set size: {len(val_set)}, Test set size: {len(test_set)}")
 
     return 0
+
 
 def extract_and_save_tiles(image_dir, slide_save_dir, position_list, tile_size,
                            imsize, step, invert_rgb=False):
