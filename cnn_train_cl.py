@@ -273,6 +273,9 @@ def main_worker(gpu, ngpus_per_node, args):
 
     traindir = os.path.join(get_data_list_path(args), args.fold_name, 'train')
     valdir = os.path.join(get_data_list_path(args), args.fold_name, 'val')
+
+    print('Train Directory: ', traindir)
+    print('Validation Directory: ', valdir)
     
     train_transforms = transforms.Compose([
         transforms.RandomResizedCrop(224, scale=(0.8, 1.)),
