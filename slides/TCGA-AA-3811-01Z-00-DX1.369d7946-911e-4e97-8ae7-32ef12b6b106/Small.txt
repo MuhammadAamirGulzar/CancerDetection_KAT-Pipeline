@@ -1,0 +1,7 @@
+slideId: TCGA-AA-3811-01Z-00-DX1.369d7946-911e-4e97-8ae7-32ef12b6b106
+Objective: 10
+Patch_size: 512
+rows: 247
+cols: 70
+height: 126720
+width: 36096
